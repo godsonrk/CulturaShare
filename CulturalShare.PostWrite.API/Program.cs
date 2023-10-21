@@ -1,8 +1,12 @@
+using CulturalShare.PostWrite.API.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddMvc();
 builder.Services.AddControllers();
+builder.Services.AddGrpc();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -17,6 +21,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapGrpcService<PostsWriteService>();
 
 app.UseAuthorization();
 
