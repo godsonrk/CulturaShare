@@ -7,12 +7,12 @@ namespace CulturalShare.Gateway.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PostController : ControllerBase
+public class PostsController : ControllerBase
 {
     private readonly PostsRead.PostsReadClient _postReadClient;
     private readonly PostsWrite.PostsWriteClient _postWriteClient;
 
-    public PostController(PostsRead.PostsReadClient postsClient, PostsWrite.PostsWriteClient postWriteClient)
+    public PostsController(PostsRead.PostsReadClient postsClient, PostsWrite.PostsWriteClient postWriteClient)
     {
         _postReadClient = postsClient;
         _postWriteClient = postWriteClient;

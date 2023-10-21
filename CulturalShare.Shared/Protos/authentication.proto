@@ -22,7 +22,8 @@ message AccessTokenReply {
 
 message RegistrationRequest {
   string Email = 1;
-  string Password = 2;
+  string NickName = 2;
+  string Password = 3;
 }
 
 message RegistrationReply {
@@ -31,4 +32,4 @@ message RegistrationReply {
 
 message RefreshTokenRequest {} // RefreshToken in header
 
-message GetOneTimeTokenRequest {} 
+message GetOneTimeTokenRequest {} // RefreshToken in header 
