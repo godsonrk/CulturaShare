@@ -1,10 +1,17 @@
 using CulturalShare.Gateway.Middleware.Extension;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using PostsReadProto;
 using PostsWriteProto;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddGrpcClient<Authentication.Authentication.AuthenticationClient>(options =>
+{
+    options.Address = new Uri("https://localhost:7140");
+});
 
 builder.Services.AddGrpcClient<PostsRead.PostsReadClient>(options =>
 {
@@ -16,6 +23,7 @@ builder.Services.AddGrpcClient<PostsWrite.PostsWriteClient>(options =>
     options.Address = new Uri("https://localhost:7143");
 });
 
+builder.Services.AddHealthChecks();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -36,6 +44,11 @@ app.UseSecureHeaders();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.MapHealthChecks("/_health", new HealthCheckOptions()
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.MapControllers();
 

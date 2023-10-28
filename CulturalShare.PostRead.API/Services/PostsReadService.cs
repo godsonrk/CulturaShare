@@ -1,7 +1,6 @@
 ﻿using CulturalShare.PostRead.Services.Services.Base;
 using Grpc.Core;
 using PostsReadProto;
-using System.Data;
 
 namespace CulturalShare.PostRead.API.Services;
 
@@ -15,11 +14,11 @@ public class PostsReadService : PostsRead.PostsReadBase
 
     public override Task<PostReply> GetPostById(GetPostByIdRequest request, ServerCallContext context)
     {
-        throw new NotImplementedException();
+        throw new RpcException(new Status(StatusCode.Unavailable, "Not implemented"));
     }
 
     public override Task<PostsList> GetPosts(GetPostsRequest request, ServerCallContext context)
     {
-        throw new RowNotInTableException("There is no data");
+        throw new RpcException(new Status(StatusCode.Unavailable, "Not implemented"));
     }
 }

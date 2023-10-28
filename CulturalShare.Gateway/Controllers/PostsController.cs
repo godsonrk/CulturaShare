@@ -1,4 +1,5 @@
-﻿using Grpc.Core;
+﻿using Authentication;
+using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
 using PostsReadProto;
 using PostsWriteProto;
@@ -11,24 +12,34 @@ public class PostsController : ControllerBase
 {
     private readonly PostsRead.PostsReadClient _postReadClient;
     private readonly PostsWrite.PostsWriteClient _postWriteClient;
+    private readonly Authentication.Authentication.AuthenticationClient _authClient;
 
-    public PostsController(PostsRead.PostsReadClient postsClient, PostsWrite.PostsWriteClient postWriteClient)
+    public PostsController(PostsRead.PostsReadClient postsClient, PostsWrite.PostsWriteClient postWriteClient, Authentication.Authentication.AuthenticationClient authClient)
     {
         _postReadClient = postsClient;
         _postWriteClient = postWriteClient;
+        _authClient = authClient;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetPostsAsync(CancellationToken cancellationToken)
     {
-        try
-        {
+        try { 
+        
+            var accessTokenRequest = new GetOneTimeTokenRequest();
+            var accessToken = await _authClient.GetOneTimeTokenAsync(accessTokenRequest, cancellationToken: cancellationToken);
+
+            var headers = new Metadata
+            {
+                { "Authentication", $"Bearer {accessToken.AccessToken}" }
+            };
+
             var request = new GetPostsRequest()
             {
                 UserId = 1,
             };
-            var result = await _postReadClient.GetPostsAsync(request, cancellationToken: cancellationToken);
 
+            var result = await _postReadClient.GetPostsAsync(request, headers, cancellationToken: cancellationToken);
             return Ok(result);
         }
         catch (RpcException)
@@ -48,7 +59,6 @@ public class PostsController : ControllerBase
                 Id = Id
             };
             var result = await _postReadClient.GetPostByIdAsync(request, cancellationToken: cancellationToken);
-
             return Ok(result);
         }
         catch (Exception)
@@ -58,7 +68,7 @@ public class PostsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreatePostAsync(CreatePostRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreatePostAsync([FromBody] CreatePostRequest request, CancellationToken cancellationToken)
     {
         try
         {
@@ -72,7 +82,7 @@ public class PostsController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdatePostAsync(UpdatePostRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdatePostAsync([FromBody] UpdatePostRequest request, CancellationToken cancellationToken)
     {
         try
         {
@@ -95,7 +105,6 @@ public class PostsController : ControllerBase
                 UserId = 1,
                 Id = Id
             };
-
             var result = await _postWriteClient.DeletePostAsync(request, cancellationToken: cancellationToken);
             return Ok(result);
         }
