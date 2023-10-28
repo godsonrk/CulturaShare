@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+option csharp_namespace = "Authentication";
+
+service Authentication 
+{
+  rpc Login (LoginRequest) returns (AccessTokenReply); // Check if user exists the system and returns Access token
+  rpc Registration (RegistrationRequest) returns (RegistrationReply); // Create user account in the system
+  rpc RefreshToken (RefreshTokenRequest) returns (AccessTokenReply); // Validate RefreshToken and returns new access token if RefreshToken valid
+  rpc GetOneTimeToken (GetOneTimeTokenRequest) returns (AccessTokenReply); // returns token for one request
+}
+
+message LoginRequest {
+  string Email = 1;
+  string Password = 2;
+}
+
+message AccessTokenReply {
+  string AccessToken = 1;
+  int32 ExpiresInSeconds = 2; // seconds until expire
+}
+
+message RegistrationRequest {
+  string Email = 1;
+  string NickName = 2;
+  string Password = 3;
+}
+
+message RegistrationReply {
+  int32 StatusCode = 1;
+}
+
+message RefreshTokenRequest {} // RefreshToken in header
+
+message GetOneTimeTokenRequest {} // RefreshToken in header 
