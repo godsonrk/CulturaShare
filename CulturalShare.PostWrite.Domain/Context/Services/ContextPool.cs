@@ -1,4 +1,4 @@
-﻿namespace CulturaShare.MongoSidecar.Database.Services;
+﻿namespace CulturalShare.PostWrite.Domain.Context.Services;
 
 public class ContextPool<T> : IDisposable where T : IDisposable
 {

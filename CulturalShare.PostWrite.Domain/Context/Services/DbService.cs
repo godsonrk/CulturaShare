@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace CulturaShare.MongoSidecar.Database.Services;
+namespace CulturalShare.PostWrite.Domain.Context.Services;
 
 public class DbService<T> where T : DbContext
 {

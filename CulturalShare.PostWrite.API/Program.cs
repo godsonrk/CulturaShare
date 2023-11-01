@@ -1,17 +1,38 @@
+using CulturalShare.Posts.Data.Entities.NpSqlEntities;
+using CulturalShare.PostWrite.API.Configuration.Base;
+using CulturalShare.PostWrite.API.DependencyInjection;
 using CulturalShare.PostWrite.API.Services;
+using CulturalShare.PostWrite.Domain.Context;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-builder.Services.AddMvc();
-builder.Services.AddControllers();
-builder.Services.AddGrpc();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+builder.InstallServices(typeof(IServiceInstaller).Assembly);
 var app = builder.Build();
+
+// Seed database.
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var dbContextDealerPortal = scope.ServiceProvider.GetRequiredService<PostWriteDBContext>();
+        if (!dbContextDealerPortal.Posts.Any())
+        {
+            dbContextDealerPortal.Posts.Add(new PostEntity()
+            {
+                Caption = "test",
+                CreatedAt = DateTime.UtcNow,
+                ImageUrl = "AAA",
+                Likes = 0,
+                Owner_Id = 1,
+            });
+
+            dbContextDealerPortal.SaveChanges();
+        }
+    }
+    catch (Exception ex)
+    {
+        throw ex;
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
