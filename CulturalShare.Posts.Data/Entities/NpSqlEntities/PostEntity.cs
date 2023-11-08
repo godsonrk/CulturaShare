@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CulturalShare.Posts.Data.Entities.NpSqlEntities;
 
+[Table("posts")]
 public class PostEntity : IPostEntity
 {
     [Key]
@@ -16,6 +17,6 @@ public class PostEntity : IPostEntity
     public int Likes { get; set; }
     public string? Location { get; set; }
 
-    public int Owner_Id { get; set; }
-    public List<CommentEntity> Comments { get; set; }
+    public int OwnerId { get; set; }
+    public ICollection<CommentEntity> Comments { get; set; }
 }

@@ -1,6 +1,6 @@
 ﻿using Confluent.Kafka;
 
-namespace CulturaShare.MongoSidecar.Services.Base;
+namespace CulturaShare.MongoSidecar.Services.DBConsumers.Base;
 
 public interface IDBConsumer
 {

@@ -1,0 +1,23 @@
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /src
+COPY ["./CulturalShare.PostWrite.API/CulturalShare.PostWrite.API.csproj", "CulturalShare.PostWrite.API/"]
+COPY ["./CulturalShare.PostWrite.Domain/CulturalShare.PostWrite.Domain.csproj", "CulturalShare.PostWrite.Domain/"]
+COPY ["./CulturalShare.Posts.Data/CulturalShare.Posts.Data.csproj", "CulturalShare.Posts.Data/"]
+COPY ["./CulturalShare.Shared/CulturalShare.Shared.csproj", "CulturalShare.Shared/"]
+RUN dotnet restore "CulturalShare.PostWrite.API/CulturalShare.PostWrite.API.csproj"
+COPY . .
+WORKDIR "/src/CulturalShare.PostWrite.API"
+RUN dotnet build "CulturalShare.PostWrite.API.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "CulturalShare.PostWrite.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "CulturalShare.PostWrite.API.dll"]

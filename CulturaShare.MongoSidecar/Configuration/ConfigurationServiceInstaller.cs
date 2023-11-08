@@ -13,5 +13,10 @@ public class ConfigurationServiceInstaller : IServiceInstaller
                     .GetSection("KafkaConfiguration")
                     .Get<KafkaConfiguration>();
         services.AddSingleton(kafkaConfig);
+
+        var debesiumConfig = configuration
+                    .GetSection("DebesiumConfiguration")
+                    .Get<DebesiumConfiguration>();
+        services.AddSingleton(debesiumConfig);
     }
 }

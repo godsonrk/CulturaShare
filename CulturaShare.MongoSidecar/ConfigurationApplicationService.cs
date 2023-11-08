@@ -15,7 +15,6 @@ public class ConfigurationApplicationService
 
         var services = new ServiceCollection();
         services.InstallServices(configuration, typeof(IServiceInstaller).Assembly);
-
         return services.BuildServiceProvider();
     }
 }

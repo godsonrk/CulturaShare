@@ -4,15 +4,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CulturalShare.Posts.Data.Entities.NpSqlEntities;
 
+[Table("comments")]
 public class CommentEntity : ICommentEntity
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public string Id { get; set; }
+    public int Id { get; set; }
     public string Username { get; set; }
     public string Text { get; set; }
     public DateTime Timestamp { get; set; }
 
-    public int Owner_Id { get; set; }
+    public int OwnerId { get; set; }
     public PostEntity Post { get; set; }
 }
