@@ -30,15 +30,15 @@ using (var scope = app.Services.CreateScope())
                 Likes = 0,
                 OwnerId = 1,
                 Comments = new List<CommentEntity>()
-            {
-                new()
                 {
-                    OwnerId = 1,
-                    Text = "test",
-                    Timestamp = DateTime.UtcNow,
-                    Username = "test",
+                    new()
+                    {
+                        OwnerId = 1,
+                        Text = "test",
+                        Timestamp = DateTime.UtcNow,
+                        Username = "test",
+                    }
                 }
-            }
             });
 
             dbContextDealerPortal.SaveChanges();

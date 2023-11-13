@@ -1,5 +1,6 @@
 ﻿using CulturaShare.MongoSidecar.Application.Base;
 using CulturaShare.MongoSidecar.Configuration.Base;
+using CulturaShare.MongoSidecar.Helper;
 using CulturaShare.MongoSidecar.Services;
 using CulturaShare.MongoSidecar.Services.Base;
 using Microsoft.Extensions.Configuration;
@@ -14,5 +15,6 @@ public class ApplicationServiceInstaller : IServiceInstaller
         services.AddHttpClient();
         services.AddSingleton<IApplication, Application.Application>();
         services.AddSingleton<IDebesiumConnectorService, DebesiumConnectorService>();
+        services.AddSingleton<IConsumerFactory, ConsumerFactory>();
     }
 }

@@ -40,6 +40,8 @@ namespace CulturaShare.MongoSidecar.Services
                             KeyConverterSchemasEnable = "false",
                             ValueConverterSchemasEnable = "false",
                             ValueConverter = "org.apache.kafka.connect.json.JsonConverter",
+                            Transforms = "unwrap",
+                            TransformsUnwrapType = "io.debezium.transforms.ExtractNewRecordState",
                             KeyConverter = "org.apache.kafka.connect.json.JsonConverter",
                             TableIncludeList = $"public.{table}",
                             SlotName = $"dbz_sales_transaction_slot_{table}",

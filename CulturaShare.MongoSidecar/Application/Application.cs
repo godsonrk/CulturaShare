@@ -1,12 +1,12 @@
 ﻿using Confluent.Kafka;
+using CulturalShare.Posts.Data.Extensions;
 using CulturalShare.PostWrite.Domain.Context;
 using CulturalShare.PostWrite.Domain.Context.Services;
 using CulturaShare.MongoSidecar.Application.Base;
+using CulturaShare.MongoSidecar.Helper;
 using CulturaShare.MongoSidecar.Model.Configuration;
 using CulturaShare.MongoSidecar.Services.Base;
-using CulturaShare.MongoSidecar.Services.DBConsumers.Base;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 
 namespace CulturaShare.MongoSidecar.Application
@@ -14,22 +14,26 @@ namespace CulturaShare.MongoSidecar.Application
     public class Application : DbService<PostWriteDBContext>, IApplication
     {
         private readonly KafkaConfiguration _kafkaConfiguration;
-        private readonly IEnumerable<IDBConsumer> _consumers;
         private readonly IDebesiumConnectorService _debesiumConnectorService;
-
-        public Application(DbContextOptions<PostWriteDBContext> dbContextOptions, KafkaConfiguration kafkaConfiguration, IEnumerable<IDBConsumer> consumers, IDebesiumConnectorService debesiumConnectorService) : base(dbContextOptions)
+        private readonly IConsumerFactory _consumerFactory;
+        public Application(DbContextOptions<PostWriteDBContext> dbContextOptions, KafkaConfiguration kafkaConfiguration, 
+            IDebesiumConnectorService debesiumConnectorService, IConsumerFactory consumerFactory) : base(dbContextOptions)
         {
             _kafkaConfiguration = kafkaConfiguration;
-            _consumers = consumers;
             _debesiumConnectorService = debesiumConnectorService;
+            _consumerFactory = consumerFactory;
         }
 
         public async Task RunAsync()
         {
             try
             {
-                await CreateDebesiumConnectors();
-                await RunKafkaConsumers();
+                using (var dbContext = CreateDbContext())
+                {
+                    var tableTypes = GetTableTypesFromDbContext(dbContext);
+                    await CreateDebesiumConnectors(tableTypes);
+                    await RunKafkaConsumers(tableTypes);
+                }
             }
             catch (Exception ex)
             {
@@ -41,16 +45,16 @@ namespace CulturaShare.MongoSidecar.Application
             }
         }
 
-        private async Task CreateDebesiumConnectors()
+        private async Task CreateDebesiumConnectors(Type[] tables)
         {
-            using (var dbContext = CreateDbContext())
-            {
-                var tableNames = GetTableNamesFromDbContext(dbContext);
-                await _debesiumConnectorService.CreateDebesiumConnectors(tableNames);
-            }
+            var tableNames = new List<string>();
+            foreach (var table in tables)
+                tableNames.Add(table.GetTableAttributeValue());
+
+            await _debesiumConnectorService.CreateDebesiumConnectors(tableNames.ToArray());
         }
 
-        private async Task RunKafkaConsumers()
+        private async Task RunKafkaConsumers(Type[] tables)
         {
             var config = new ConsumerConfig
             {
@@ -59,11 +63,11 @@ namespace CulturaShare.MongoSidecar.Application
                 AutoOffsetReset = AutoOffsetReset.Earliest
             };
 
-            var consumersTasks = _consumers.Select(x => x.Consume(config)).ToList();
-            await Task.WhenAll(consumersTasks);
+            var cunsumers = tables.Select(x => _consumerFactory.GetPosgresConsumer().Consume(config, x, CreateDbContext));
+            await Task.WhenAll(cunsumers);
         }
 
-        private string[] GetTableNamesFromDbContext(PostWriteDBContext dbContext)
+        private Type[] GetTableTypesFromDbContext(PostWriteDBContext dbContext)
         {
             var tables = dbContext.GetType()
                 .GetProperties(BindingFlags.Instance | BindingFlags.Public)
@@ -71,17 +75,7 @@ namespace CulturaShare.MongoSidecar.Application
                             p.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>))
                 .ToArray();
 
-            var tableNames = new List<string>();
-            foreach (var table in tables)
-            {
-                var entityType = table.PropertyType.GenericTypeArguments[0];
-                var tableAttribute = entityType.GetCustomAttribute<TableAttribute>();
-
-                string tableName = tableAttribute != null ? tableAttribute.Name : table.Name;
-                tableNames.Add(tableName);
-            }
-
-            return tableNames.ToArray();
+            return tables.Select(x => x.PropertyType).ToArray();
         }
     }
 }
