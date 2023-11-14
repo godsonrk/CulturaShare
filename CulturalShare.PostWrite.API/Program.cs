@@ -35,7 +35,7 @@ using (var scope = app.Services.CreateScope())
                     {
                         OwnerId = 1,
                         Text = "test",
-                        Timestamp = DateTime.UtcNow,
+                        CreatedAt = DateTime.UtcNow,
                         Username = "test",
                     }
                 }

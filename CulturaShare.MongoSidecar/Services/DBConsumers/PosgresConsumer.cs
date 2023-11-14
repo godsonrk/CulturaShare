@@ -1,13 +1,14 @@
 ﻿using Confluent.Kafka;
 using CulturalShare.Posts.Data.Extensions;
 using CulturalShare.PostWrite.Domain.Context;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Newtonsoft.Json.Linq;
 
 namespace CulturaShare.MongoSidecar.Services.DBConsumers;
 
 public class PosgresConsumer : IPostgresConsumer
 {
-    public async Task Consume(ConsumerConfig kafkaConfig, Type table, Func<PostWriteDBContext> CreateDbContext)
+    public async Task Consume(ConsumerConfig kafkaConfig, IEntityType table, Func<PostWriteDBContext> CreateDbContext)
     {
         var topic = $"source.public.{table.GetTableAttributeValue()}";
         using (var consumer = new ConsumerBuilder<Ignore, string>(kafkaConfig).Build())

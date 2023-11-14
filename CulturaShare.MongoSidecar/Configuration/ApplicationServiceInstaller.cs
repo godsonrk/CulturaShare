@@ -14,7 +14,6 @@ public class ApplicationServiceInstaller : IServiceInstaller
     {
         services.AddHttpClient();
         services.AddSingleton<IApplication, Application.Application>();
-        services.AddSingleton<IDebesiumConnectorService, DebesiumConnectorService>();
         services.AddSingleton<IConsumerFactory, ConsumerFactory>();
     }
 }

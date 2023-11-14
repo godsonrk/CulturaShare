@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace CulturaShare.MongoSidecar.Services
 {
-    public class DebesiumConnectorService : IDebesiumConnectorService
+    public class DebesiumConnectorService : IDebesiumConnectorService, IAsyncDisposable
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly DebesiumConfiguration _debesiumConfiguration;
@@ -17,7 +17,6 @@ namespace CulturaShare.MongoSidecar.Services
             _httpClientFactory = httpClientFactory;
             _debesiumConfiguration = debesiumConfiguration;
         }
-
         public async Task CreateDebesiumConnectors(string[] tables)
         {
             foreach (var table in tables)
@@ -94,6 +93,11 @@ namespace CulturaShare.MongoSidecar.Services
             {
                 throw ex;
             }
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+           await DeleteDebesiumConnectors();
         }
     }
 }
