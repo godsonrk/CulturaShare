@@ -53,7 +53,7 @@ namespace CulturaShare.MongoSidecar.Application
                 AutoOffsetReset = AutoOffsetReset.Earliest
             };
 
-            var cunsumers = tables.Select(x => _consumerFactory.GetPosgresConsumer().Consume(config, x, CreateDbContext));
+            var cunsumers = tables.Select(x => _consumerFactory.CreateConsumerForEntityType(x, config, CreateDbContext));
             await Task.WhenAll(cunsumers);
         }
     }

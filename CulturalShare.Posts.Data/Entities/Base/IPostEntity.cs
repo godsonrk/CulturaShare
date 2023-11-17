@@ -2,9 +2,8 @@
 
 namespace CulturalShare.Posts.Data.Entities.Base;
 
-public interface IPostEntity
+public interface IPostEntity : IEntity
 {
-    public int Id { get; set; }
     public string Caption { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAd { get; set; }

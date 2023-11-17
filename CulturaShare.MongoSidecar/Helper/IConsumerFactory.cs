@@ -1,8 +1,10 @@
-﻿using CulturaShare.MongoSidecar.Services.DBConsumers;
+﻿using Confluent.Kafka;
+using CulturalShare.PostWrite.Domain.Context;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace CulturaShare.MongoSidecar.Helper;
 
 public interface IConsumerFactory
 {
-    IPostgresConsumer GetPosgresConsumer();
+    Task CreateConsumerForEntityType(IEntityType type, ConsumerConfig kafkaConfig, Func<PostWriteDBContext> CreateDbContext);
 }

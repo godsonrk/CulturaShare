@@ -22,6 +22,9 @@ public class PostWriteDBContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<PostEntity>().ToTable("posts");
+        modelBuilder.Entity<CommentEntity>().ToTable("comments");
+
         foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
         {
             relationship.DeleteBehavior = DeleteBehavior.Restrict;
