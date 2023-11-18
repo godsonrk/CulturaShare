@@ -1,4 +1,5 @@
-﻿using CulturaShare.MongoSidecar.Configuration.Base;
+﻿using CulturalShare.Posts.Data.Configuration;
+using CulturaShare.MongoSidecar.Configuration.Base;
 using CulturaShare.MongoSidecar.Model.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,5 +19,10 @@ public class ConfigurationServiceInstaller : IServiceInstaller
                     .GetSection("DebesiumConfiguration")
                     .Get<DebesiumConfiguration>();
         services.AddSingleton(debesiumConfig);
+
+        var mongoConfig = configuration
+            .GetSection("MongoConfiguration")
+            .Get<MongoConfiguration>();
+        services.AddSingleton(mongoConfig);
     }
 }

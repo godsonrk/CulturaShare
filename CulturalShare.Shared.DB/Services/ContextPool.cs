@@ -1,4 +1,4 @@
-﻿namespace CulturalShare.PostWrite.Domain.Context.Services;
+﻿namespace CulturalShare.Shared.DB.Services;
 
 public class ContextPool<T> : IDisposable where T : IDisposable
 {

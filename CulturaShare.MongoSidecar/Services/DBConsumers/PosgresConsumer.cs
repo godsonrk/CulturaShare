@@ -1,17 +1,20 @@
 ﻿using Confluent.Kafka;
 using CulturalShare.Posts.Data.Extensions;
 using CulturalShare.PostWrite.Domain.Context;
-using Microsoft.EntityFrameworkCore.Metadata;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace CulturaShare.MongoSidecar.Services.DBConsumers;
 
 public class PosgresConsumer : IPostgresConsumer
 {
-    public async Task Consume<T> (ConsumerConfig kafkaConfig, Func<PostWriteDBContext> CreateDbContext, params Expression<Func<T, object>>[] includes) where T : class
+    public async Task Consume<T> (ConsumerConfig kafkaConfig, Func<PostWriteDBContext> CreateDbContext, IMongoCollection<T> mongoCollection,
+        params Expression<Func<T, object>>[] includes) where T : class
     {
+
         var entityType = typeof(T);
         var topic = $"source.public.{entityType.GetTableAttributeValue()}";
         using (var consumer = new ConsumerBuilder<Ignore, string>(kafkaConfig).Build())
@@ -29,8 +32,19 @@ public class PosgresConsumer : IPostgresConsumer
                     {
                         var consumeResult = consumer.Consume(cts.Token);
                         var id = GetIdFromMessage(consumeResult.Message.Value);
-                    
+
                         var entity = await context.GetEntityByIdAsync(id, includes);
+
+                        var serializerSettings = new JsonSerializerSettings
+                        {
+                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                        };
+                        // Convert entity to JSON
+                        string json = JsonConvert.SerializeObject(entity, serializerSettings);
+
+                        // Insert JSON document into MongoDB
+                        var entityFromJson = JsonConvert.DeserializeObject<T>(json);
+                        await mongoCollection.InsertOneAsync(entityFromJson);
                     }
                 }
             }
@@ -47,22 +61,6 @@ public class PosgresConsumer : IPostgresConsumer
                 consumer.Close();
             }
         }
-
-        
-    }
-
-    public async Task Consume(ConsumerConfig kafkaConfig, IEntityType entityType, Func<PostWriteDBContext> CreateDbContext)
-    {
-        using (var context = CreateDbContext())
-        {
-            var methods = context.GetType().GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-            var a = methods.Where(x => x.Name.Contains("get"));
-            // Get the GetEntities method using reflection
-            MethodInfo method = methods
-                .FirstOrDefault(m => m.Name == "get_People" && m.GetParameters().Length == 0 && m.ReturnType.IsGenericType);
-        }
-
-        
     }
 
     private int GetIdFromMessage(string message)
@@ -73,7 +71,7 @@ public class PosgresConsumer : IPostgresConsumer
             JObject jsonObject = JObject.Parse(message);
 
             // Get the value of the "Id" field
-            int idValue = (int)jsonObject["Id"];
+            var idValue = (int)jsonObject["Id"];
 
             return idValue;
         }

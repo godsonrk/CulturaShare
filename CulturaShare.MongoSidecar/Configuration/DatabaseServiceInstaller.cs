@@ -1,4 +1,5 @@
-﻿using CulturalShare.PostWrite.Domain.Context;
+﻿using CulturalShare.PostRead.Domain.Context;
+using CulturalShare.PostWrite.Domain.Context;
 using CulturaShare.MongoSidecar.Configuration.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,5 +13,7 @@ public class DatabaseServiceInstaller : IServiceInstaller
     {
         services.AddDbContext<PostWriteDBContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("PostgresDB")));
+
+        services.AddSingleton<MongoDbContext>();
     }
 }

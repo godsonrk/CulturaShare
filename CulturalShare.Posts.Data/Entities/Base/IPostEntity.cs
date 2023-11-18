@@ -1,9 +1,8 @@
-﻿using CulturalShare.Posts.Data.Entities.NpSqlEntities;
+﻿namespace CulturalShare.Posts.Data.Entities.Base;
 
-namespace CulturalShare.Posts.Data.Entities.Base;
-
-public interface IPostEntity : IEntity
+public interface IPostEntity
 {
+    public int Id { get; set; }
     public string Caption { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAd { get; set; }
@@ -12,5 +11,5 @@ public interface IPostEntity : IEntity
     public string? Location { get; set; }
 
     public int OwnerId { get; set; }
-    public ICollection<CommentEntity> Comments { get; set; }
+
 }
