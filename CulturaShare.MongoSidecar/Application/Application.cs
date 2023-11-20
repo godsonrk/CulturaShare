@@ -1,4 +1,5 @@
 ﻿using Confluent.Kafka;
+using CulturalShare.MongoSidecar.Model.Configuration;
 using CulturalShare.PostRead.Domain.Context;
 using CulturalShare.Posts.Data.Extensions;
 using CulturalShare.PostWrite.Domain.Context;
@@ -7,6 +8,7 @@ using CulturaShare.MongoSidecar.Application.Base;
 using CulturaShare.MongoSidecar.Helper;
 using CulturaShare.MongoSidecar.Model.Configuration;
 using CulturaShare.MongoSidecar.Services;
+using CulturaShare.MongoSidecar.Services.DBConsumers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -19,13 +21,15 @@ public class Application : DbService<PostWriteDBContext>, IApplication
     private readonly IConsumerFactory _consumerFactory;
     private readonly DebesiumConfiguration _debesiumConfiguration;
     private readonly MongoDbContext _mongoDbContext;
-    public Application(DbContextOptions<PostWriteDBContext> dbContextOptions, KafkaConfiguration kafkaConfiguration, IHttpClientFactory httpClientFactory, IConsumerFactory consumerFactory, DebesiumConfiguration debesiumConfiguration, MongoDbContext mongoDbContext) : base(dbContextOptions)
+    private readonly PostgresConfiguration _postgresConfiguration;
+    public Application(DbContextOptions<PostWriteDBContext> dbContextOptions, KafkaConfiguration kafkaConfiguration, IHttpClientFactory httpClientFactory, IConsumerFactory consumerFactory, DebesiumConfiguration debesiumConfiguration, MongoDbContext mongoDbContext, PostgresConfiguration postgresConfiguration) : base(dbContextOptions)
     {
         _kafkaConfiguration = kafkaConfiguration;
         _httpClientFactory = httpClientFactory;
         _consumerFactory = consumerFactory;
         _debesiumConfiguration = debesiumConfiguration;
         _mongoDbContext = mongoDbContext;
+        _postgresConfiguration = postgresConfiguration;
     }
 
     public async Task RunAsync()
@@ -35,7 +39,7 @@ public class Application : DbService<PostWriteDBContext>, IApplication
             var tableTypes = dbContext.Model.GetEntityTypes();
             var tableNames = tableTypes.Select(x => x.GetTableAttributeValue()).ToArray();
 
-            await using (var debesiumConnectorService = new DebesiumConnectorService(_httpClientFactory, _debesiumConfiguration))
+            await using (var debesiumConnectorService = new DebesiumConnectorService(_httpClientFactory, _debesiumConfiguration, _postgresConfiguration))
             {
                 await debesiumConnectorService.CreateDebesiumConnectors(tableNames);
 

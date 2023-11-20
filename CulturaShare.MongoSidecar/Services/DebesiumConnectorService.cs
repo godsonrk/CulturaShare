@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using CulturalShare.MongoSidecar.Model.Configuration;
 using CulturaShare.MongoSidecar.Model.Configuration;
 using CulturaShare.MongoSidecar.Model.ConnectorModel;
 using CulturaShare.MongoSidecar.Model.Exceptions;
@@ -11,11 +12,13 @@ namespace CulturaShare.MongoSidecar.Services
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly DebesiumConfiguration _debesiumConfiguration;
+        private readonly PostgresConfiguration _postgresConfiguration;
 
-        public DebesiumConnectorService(IHttpClientFactory httpClientFactory, DebesiumConfiguration debesiumConfiguration)
+        public DebesiumConnectorService(IHttpClientFactory httpClientFactory, DebesiumConfiguration debesiumConfiguration, PostgresConfiguration postgresConfiguration)
         {
             _httpClientFactory = httpClientFactory;
             _debesiumConfiguration = debesiumConfiguration;
+            _postgresConfiguration = postgresConfiguration;
         }
         public async Task CreateDebesiumConnectors(string[] tables)
         {
@@ -29,11 +32,11 @@ namespace CulturaShare.MongoSidecar.Services
                         Config = new ConnectorConfig
                         {
                             ConnectorClass = "io.debezium.connector.postgresql.PostgresConnector",
-                            DatabaseHostname = "postgres",
-                            DatabasePort = "5432",
-                            DatabaseUser = "docker",
-                            DatabasePassword = "docker",
-                            DatabaseDbName = "PostWrite",
+                            DatabaseHostname = "postgres", // TODO Change when run in docker
+                            DatabasePort = _postgresConfiguration.Port.ToString(),
+                            DatabaseUser = _postgresConfiguration.Username,
+                            DatabasePassword = _postgresConfiguration.Password,
+                            DatabaseDbName = _postgresConfiguration.Database,
                             PluginName = "pgoutput",
                             DatabaseServerName = "source",
                             KeyConverterSchemasEnable = "false",
