@@ -37,18 +37,16 @@ public class Application : DbService<PostWriteDBContext>, IApplication
         using (var dbContext = CreateDbContext())
         {
             var tableTypes = dbContext.Model.GetEntityTypes();
-            var tableNames = tableTypes.Select(x => x.GetTableAttributeValue()).ToArray();
 
             await using (var debesiumConnectorService = new DebesiumConnectorService(_httpClientFactory, _debesiumConfiguration, _postgresConfiguration))
             {
-                await debesiumConnectorService.CreateDebesiumConnectors(tableNames);
-
-                await RunKafkaConsumers(tableTypes.ToArray());
+                await debesiumConnectorService.CreateDebesiumConnectors(tableTypes);
+                await RunKafkaConsumers(tableTypes);
             }
         }
     }
      
-    private async Task RunKafkaConsumers(IEntityType[] tables)
+    private async Task RunKafkaConsumers(IEnumerable<IEntityType> tables)
     {
         var config = new ConsumerConfig
         {

@@ -63,4 +63,7 @@ public class ConnectorConfig
 
     [JsonProperty("tombstones.on.delete")]
     public string TombstonesOnDelete { get; set; }
+
+    [JsonProperty("column.blacklist")]
+    public string ColumnBlackList { get; set; }
 }
