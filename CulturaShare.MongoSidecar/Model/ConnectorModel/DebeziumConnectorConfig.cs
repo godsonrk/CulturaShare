@@ -43,12 +43,6 @@ public class ConnectorConfig
     [JsonProperty("value.converter.schemas.enable")]
     public string ValueConverterSchemasEnable { get; set; }
 
-    [JsonProperty("transforms")]
-    public string Transforms {  get; set; }
-
-    [JsonProperty("transforms.unwrap.type")]
-    public string TransformsUnwrapType { get; set; }
-
     [JsonProperty("value.converter")]
     public string ValueConverter { get; set; }
 
