@@ -1,8 +1,8 @@
-﻿using CulturalShare.PostWrite.API.Configuration.Base;
+﻿using CulturalShare.PostRead.API.Configuration.Base;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 
-namespace CulturalShare.PostWrite.API.Configuration;
+namespace CulturalShare.PostRead.API.Configuration;
 
 public class SwaggerServiceInstaller : IServiceInstaller
 {
@@ -14,7 +14,7 @@ public class SwaggerServiceInstaller : IServiceInstaller
         {
             c.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "Post Write API",
+                Title = "Post Read API",
                 Version = "v1",
             });
 

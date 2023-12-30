@@ -9,9 +9,6 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 var builder = WebApplication.CreateBuilder(args);
 builder.InstallServices(typeof(IServiceInstaller).Assembly);
 
-builder.Services.AddHealthChecks()
-           .AddNpgSql(builder.Configuration.GetConnectionString("Postgres"), name: "PostgresDB");
-
 var app = builder.Build();
 
 // Seed database.
