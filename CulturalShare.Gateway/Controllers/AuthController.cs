@@ -1,4 +1,4 @@
-﻿using Authentication;
+﻿using AuthenticationProto;
 using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,9 +8,9 @@ namespace CulturalShare.Gateway.Controllers;
 [ApiController]
 public class AuthController : ControllerBase
 {
-    private readonly Authentication.Authentication.AuthenticationClient _authClient;
+    private readonly Authentication.AuthenticationClient _authClient;
 
-    public AuthController(Authentication.Authentication.AuthenticationClient authClient)
+    public AuthController(Authentication.AuthenticationClient authClient)
     {
         _authClient = authClient;
     }

@@ -1,4 +1,4 @@
-﻿using Authentication;
+﻿using AuthenticationProto;
 using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
 using PostsReadProto;
@@ -12,9 +12,9 @@ public class PostsController : ControllerBase
 {
     private readonly PostsRead.PostsReadClient _postReadClient;
     private readonly PostsWrite.PostsWriteClient _postWriteClient;
-    private readonly Authentication.Authentication.AuthenticationClient _authClient;
+    private readonly Authentication.AuthenticationClient _authClient;
 
-    public PostsController(PostsRead.PostsReadClient postsClient, PostsWrite.PostsWriteClient postWriteClient, Authentication.Authentication.AuthenticationClient authClient)
+    public PostsController(PostsRead.PostsReadClient postsClient, PostsWrite.PostsWriteClient postWriteClient, Authentication.AuthenticationClient authClient)
     {
         _postReadClient = postsClient;
         _postWriteClient = postWriteClient;

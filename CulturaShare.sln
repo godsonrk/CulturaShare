@@ -45,7 +45,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CulturalShare.PostWrite.Rep
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CulturalShare.PostWrite.Domain", "CulturalShare.PostWrite.Domain\CulturalShare.PostWrite.Domain.csproj", "{F199E875-20B7-4B7E-96C9-2A09F631FC12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CulturalShare.Shared.DB", "CulturalShare.Shared.DB\CulturalShare.Shared.DB.csproj", "{17501F8F-4287-495E-ACCA-6FFDF42FB034}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CulturalShare.Shared.DB", "CulturalShare.Shared.DB\CulturalShare.Shared.DB.csproj", "{17501F8F-4287-495E-ACCA-6FFDF42FB034}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Auth", "Auth", "{74528D22-B76E-4F03-8F06-E19156ABC717}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CulturalShare.Auth.API", "CulturalShare.Auth\CulturalShare.Auth.API.csproj", "{F071B88D-326F-4C0E-937D-1AC783F04952}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +109,10 @@ Global
 		{17501F8F-4287-495E-ACCA-6FFDF42FB034}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17501F8F-4287-495E-ACCA-6FFDF42FB034}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17501F8F-4287-495E-ACCA-6FFDF42FB034}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F071B88D-326F-4C0E-937D-1AC783F04952}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F071B88D-326F-4C0E-937D-1AC783F04952}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F071B88D-326F-4C0E-937D-1AC783F04952}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F071B88D-326F-4C0E-937D-1AC783F04952}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -129,6 +137,8 @@ Global
 		{BFF73A1C-91E9-4C3F-9B89-3839F2F4F66A} = {57194AEC-2601-4AA1-97FD-E2D8C5D6D173}
 		{F199E875-20B7-4B7E-96C9-2A09F631FC12} = {57194AEC-2601-4AA1-97FD-E2D8C5D6D173}
 		{17501F8F-4287-495E-ACCA-6FFDF42FB034} = {5A09EE84-C8E9-4DE3-97A5-92CEC7CD3E20}
+		{74528D22-B76E-4F03-8F06-E19156ABC717} = {3591D550-3A0B-47BF-B5E4-7030F109A1E8}
+		{F071B88D-326F-4C0E-937D-1AC783F04952} = {74528D22-B76E-4F03-8F06-E19156ABC717}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E650DD7A-6013-4EF5-ACB1-555A82AE0F01}
