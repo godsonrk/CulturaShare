@@ -19,9 +19,9 @@ public class DatabaseServiceInstaller : IServiceInstaller
         }
         else
         {
-            Console.WriteLine(builder.Configuration.GetConnectionString("PostgresDB"));
+            Console.WriteLine(builder.Configuration.GetConnectionString("PostWriteDB"));
             builder.Services.AddDbContext<PostWriteDBContext>(options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresDB")));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("PostWriteDB")));
         }   
     }
 }

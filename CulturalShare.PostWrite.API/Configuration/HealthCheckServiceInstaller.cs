@@ -7,6 +7,6 @@ public class HealthCheckServiceInstaller : IServiceInstaller
     public void Install(WebApplicationBuilder builder)
     {
         builder.Services.AddHealthChecks()
-           .AddNpgSql(builder.Configuration.GetConnectionString("Postgres"), name: "PostgresDB");
+           .AddNpgSql(builder.Configuration.GetConnectionString("PostWriteDB"), name: "PostWriteDB");
     }
 }

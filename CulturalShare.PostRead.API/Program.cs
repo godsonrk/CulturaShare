@@ -1,6 +1,8 @@
 using CulturalShare.PostRead.API.Configuration.Base;
 using CulturalShare.PostRead.API.DependencyInjection;
 using CulturalShare.PostRead.API.Services;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.InstallServices(typeof(IServiceInstaller).Assembly);
@@ -19,6 +21,11 @@ app.UseHttpsRedirection();
 app.MapGrpcService<PostsReadService>();
 
 app.UseAuthorization();
+
+app.MapHealthChecks("/_health", new HealthCheckOptions()
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.MapControllers();
 

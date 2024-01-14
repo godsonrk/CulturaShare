@@ -49,7 +49,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CulturalShare.Shared.DB", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Auth", "Auth", "{74528D22-B76E-4F03-8F06-E19156ABC717}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CulturalShare.Auth.API", "CulturalShare.Auth\CulturalShare.Auth.API.csproj", "{F071B88D-326F-4C0E-937D-1AC783F04952}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CulturalShare.Auth.API", "CulturalShare.Auth\CulturalShare.Auth.API.csproj", "{F071B88D-326F-4C0E-937D-1AC783F04952}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CulturalShare.Auth.Domain", "CulturalShare.Auth.Domain\CulturalShare.Auth.Domain.csproj", "{94A1241C-9DB0-4040-B6CB-F4398F8CE83A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CulturalShare.Auth.Repositories", "CulturalShare.Auth.Repositories\CulturalShare.Auth.Repositories.csproj", "{E7CE66AC-4BED-4B0B-8F50-D5E71611E602}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CulturalShare.Auth.Services", "CulturalShare.Auth.Services\CulturalShare.Auth.Services.csproj", "{72A69F5C-923D-4D67-A748-FE66630B42E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,6 +119,18 @@ Global
 		{F071B88D-326F-4C0E-937D-1AC783F04952}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F071B88D-326F-4C0E-937D-1AC783F04952}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F071B88D-326F-4C0E-937D-1AC783F04952}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94A1241C-9DB0-4040-B6CB-F4398F8CE83A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94A1241C-9DB0-4040-B6CB-F4398F8CE83A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94A1241C-9DB0-4040-B6CB-F4398F8CE83A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94A1241C-9DB0-4040-B6CB-F4398F8CE83A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7CE66AC-4BED-4B0B-8F50-D5E71611E602}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7CE66AC-4BED-4B0B-8F50-D5E71611E602}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7CE66AC-4BED-4B0B-8F50-D5E71611E602}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7CE66AC-4BED-4B0B-8F50-D5E71611E602}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72A69F5C-923D-4D67-A748-FE66630B42E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72A69F5C-923D-4D67-A748-FE66630B42E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72A69F5C-923D-4D67-A748-FE66630B42E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72A69F5C-923D-4D67-A748-FE66630B42E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -139,6 +157,9 @@ Global
 		{17501F8F-4287-495E-ACCA-6FFDF42FB034} = {5A09EE84-C8E9-4DE3-97A5-92CEC7CD3E20}
 		{74528D22-B76E-4F03-8F06-E19156ABC717} = {3591D550-3A0B-47BF-B5E4-7030F109A1E8}
 		{F071B88D-326F-4C0E-937D-1AC783F04952} = {74528D22-B76E-4F03-8F06-E19156ABC717}
+		{94A1241C-9DB0-4040-B6CB-F4398F8CE83A} = {74528D22-B76E-4F03-8F06-E19156ABC717}
+		{E7CE66AC-4BED-4B0B-8F50-D5E71611E602} = {74528D22-B76E-4F03-8F06-E19156ABC717}
+		{72A69F5C-923D-4D67-A748-FE66630B42E4} = {74528D22-B76E-4F03-8F06-E19156ABC717}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E650DD7A-6013-4EF5-ACB1-555A82AE0F01}
